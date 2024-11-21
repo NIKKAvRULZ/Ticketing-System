@@ -1,0 +1,9 @@
+<div class="container">
+    <h2>Ticket Dashboard</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let ticket of tickets">
+        <div>{{ ticket.title }} - Status: {{ ticket.status }}</div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  

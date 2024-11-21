@@ -1,0 +1,11 @@
+.container {
+    margin: 20px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  mat-list-item {
+    font-size: 16px;
+  }
+  
