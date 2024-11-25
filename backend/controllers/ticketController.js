@@ -66,3 +66,21 @@ exports.searchTickets = async (req, res) => {
     }
   };
   
+  // Controller to delete a ticket by its ID
+exports.deleteTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+
+    // Find the ticket by ID and remove it from the database
+    const deletedTicket = await Ticket.findByIdAndDelete(ticketId);
+
+    if (!deletedTicket) {
+      return res.status(404).json({ message: 'Ticket not found' });
+    }
+
+    res.status(200).json({ message: 'Ticket deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error deleting ticket' });
+  }
+};
