@@ -1,20 +1,21 @@
 const Ticket = require('../models/Ticket');
 
-// Fetch all tickets
-exports.getTickets = async (req, res) => {
-  try {
-    const tickets = await Ticket.find();
-    res.status(200).json(tickets);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching tickets' });
-  }
-};
-
-// Add a new ticket
+// Controller to add a new ticket with quantity, price
 exports.addTicket = async (req, res) => {
   try {
-    const { title } = req.body;
-    const ticket = new Ticket({ title });
+    const { title, quantity, price } = req.body;
+
+    if (quantity <= 0) {
+      return res.status(400).json({ message: 'Quantity must be a positive number.' });
+    }
+
+    const ticket = new Ticket({
+      title,
+      price,
+      quantity,
+      availableCount: quantity, // Initially, all tickets are available
+    });
+
     await ticket.save();
     res.status(201).json(ticket);
   } catch (error) {
@@ -22,7 +23,7 @@ exports.addTicket = async (req, res) => {
   }
 };
 
-// Buy a ticket
+// Controller to buy a ticket (update available and sold count)
 exports.buyTicket = async (req, res) => {
   try {
     const { ticketId } = req.params;
@@ -34,11 +35,12 @@ exports.buyTicket = async (req, res) => {
       return res.status(404).json({ message: 'Ticket not found' });
     }
 
-    if (ticket.status === 'sold') {
-      return res.status(400).json({ message: 'Ticket is already sold' });
+    if (ticket.availableCount <= 0) {
+      return res.status(400).json({ message: 'Ticket is sold out' });
     }
 
-    ticket.status = 'sold';
+    ticket.sold += 1;
+    ticket.availableCount -= 1;
     ticket.purchaser = purchaser;
 
     await ticket.save();
@@ -46,6 +48,22 @@ exports.buyTicket = async (req, res) => {
     res.status(200).json(ticket);
   } catch (error) {
     res.status(500).json({ message: 'Error purchasing ticket' });
+  }
+};
+
+// Controller to get all tickets with available count and price
+exports.getTickets = async (req, res) => {
+  try {
+    const tickets = await Ticket.find();
+    
+    const ticketsWithAvailableCount = tickets.map(ticket => ({
+      ...ticket.toObject(),
+      availableCount: ticket.quantity - ticket.sold, // Calculate available tickets
+    }));
+
+    res.status(200).json(ticketsWithAvailableCount);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tickets' });
   }
 };
 // Search tickets by purchaser's name

@@ -18,9 +18,12 @@ export const buyTicket = async (ticketId, purchaser) => {
 };
 
 export const searchTickets = async (purchaserName) => {
-  const response = await axios.get(`${API_BASE_URL}/tickets/search`, { params: { purchaser: purchaserName } });
+  const response = await axios.get(`${API_BASE_URL}/tickets/search`, {
+    params: { purchaser: purchaserName },
+  });
   return response.data;
 };
+
 // DELETE request to delete a ticket
 export const deleteTicket = async (ticketId) => {
   const response = await axios.delete(`${API_BASE_URL}/tickets/${ticketId}`);

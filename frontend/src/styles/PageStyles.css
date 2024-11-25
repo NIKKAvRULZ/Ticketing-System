@@ -1,41 +1,29 @@
-/* Page container */
-.page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+/* General Page Styling */
+.page-container,
+.search-tickets-page,
+.view-tickets-page {
+  max-width: 1200px; /* Set a uniform max-width for all pages */
+  margin: 20px auto;
   padding: 20px;
   background: #ffffff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  max-width: 900px;
-  margin: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Add a hover effect for page cards */
-.page-container:hover {
-  transform: scale(1.02);
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* Title styling */
-.page-title {
-  font-size: 2.8rem;
-  color: #007BFF;
   text-align: center;
-  font-weight: 700;
-  margin-bottom: 20px;
+  min-height: 100vh; /* Ensure the page has enough height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-/* Content container */
-.content-container {
-  width: 100%;
-  background-color: #ffffff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+.page-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Title Styling */
+h1, h2 {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 20px;
 }
 
 /* Buttons */
@@ -66,11 +54,136 @@ input, select {
   font-size: 1rem;
 }
 
-/* No data text */
-.no-data-text {
+/* Search Bar Styling */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 60%;
+  padding: 12px;
+  border-radius: 6px 0 0 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.search-bar button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Cards Layout (Tickets and User) */
+.user-cards-container,
+.tickets-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Space between cards */
+  justify-items: center; /* Center cards inside grid cells */
+}
+
+/* User Card Styling */
+.user-card,
+.ticket-card {
+  width: 100%;
+  max-width: 280px; /* Ensures cards don't become too wide */
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.user-card:hover,
+.ticket-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Status Colors for Ticket Cards */
+.ticket-card.available {
+  border-left: 6px solid #28a745; /* Green for available tickets */
+}
+
+.ticket-card.sold {
+  border-left: 6px solid #dc3545; /* Red for sold tickets */
+}
+
+/* User's Ticket Summary */
+.user-summary {
+  margin-top: 20px;
   font-size: 1.2rem;
-  text-align: center;
+  color: #333;
+}
+
+.user-summary p {
+  margin: 5px 0;
+}
+
+/* Loading and No Tickets Text */
+.loading-text,
+.no-tickets-text,
+.error-text {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 20px;
+}
+
+.error-text {
+  color: #dc3545; /* Red for error messages */
+}
+
+.loading-text {
+  color: #666;
+}
+
+.no-tickets-text {
   color: #888;
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+/* Ticket Card Text Styling */
+.ticket-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.ticket-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.ticket-card strong {
+  color: #000;
 }
 
 /* Animations */
@@ -87,4 +200,54 @@ input, select {
 
 .page-container {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Centering the main container */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Additional styling to ensure proper spacing */
+.search-tickets-page {
+  padding: 20px;
+}
+
+.search-bar input {
+  margin-right: 10px;
+}
+
+.user-cards-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.ticket-card {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.user-summary {
+  margin-top: 20px;
+}
+
+.error-text,
+.no-tickets-text,
+.loading-text {
+  color: red;
+}
+
+.loading-text {
+  color: #007bff;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchTickets, deleteTicket } from '../services/api'; // Import delete function
-import '../styles/ViewTicketsPage.css'; // Import shared styles
+import { fetchTickets, deleteTicket } from '../services/api'; // Import the API function for fetching and deleting tickets
+import '../styles/PageStyles.css'; // Import shared styles
 
 const ViewTicketsPage = () => {
   const [tickets, setTickets] = useState([]);
@@ -22,12 +22,11 @@ const ViewTicketsPage = () => {
   }, []);
 
   const handleDelete = async (ticketId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this ticket?');
-    if (!confirmed) return;
-
     try {
+      // Call the deleteTicket API function
       await deleteTicket(ticketId);
-      setTickets(tickets.filter(ticket => ticket._id !== ticketId)); // Remove deleted ticket from state
+      // Remove the deleted ticket from the state
+      setTickets(tickets.filter((ticket) => ticket._id !== ticketId));
     } catch (error) {
       console.error('Error deleting ticket:', error);
     }
@@ -43,12 +42,16 @@ const ViewTicketsPage = () => {
       <div className="tickets-container">
         {tickets.length > 0 ? (
           tickets.map((ticket) => (
-            <div key={ticket._id} className={`ticket-card ${ticket.status}`}>
+            <div key={ticket._id} className={`ticket-card ${ticket.availableCount > 0 ? 'available' : 'sold'}`}>
               <h2>{ticket.title}</h2>
-              <p>Status: <strong>{ticket.status.toUpperCase()}</strong></p>
+              <p>Status: <strong>{ticket.availableCount > 0 ? 'Available' : 'Sold'}</strong></p>
+              <p>Price: ${ticket.price}</p>
               <p>Available: {ticket.availableCount}</p>
               <p>Sold: {ticket.sold}</p>
-              <button onClick={() => handleDelete(ticket._id)} className="delete-button">Delete</button>
+              {/* Delete button */}
+              <button className="delete-button" onClick={() => handleDelete(ticket._id)}>
+                Delete
+              </button>
             </div>
           ))
         ) : (

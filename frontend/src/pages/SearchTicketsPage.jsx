@@ -17,8 +17,23 @@ const SearchTicketsPage = () => {
     setError('');
     setLoading(true);
     try {
+      // Search for tickets purchased by the user
       const data = await searchTickets(name);
-      setResults(data);
+      
+      if (data.length === 0) {
+        setError('No tickets found for the provided name.');
+      } else {
+        // Group tickets by purchaser (user)
+        const groupedTickets = data.reduce((acc, ticket) => {
+          if (!acc[ticket.purchaser]) {
+            acc[ticket.purchaser] = [];
+          }
+          acc[ticket.purchaser].push(ticket);
+          return acc;
+        }, {});
+        
+        setResults(groupedTickets);
+      }
     } catch (err) {
       console.error('Error searching tickets:', err);
       setError('An error occurred while searching. Please try again.');
@@ -28,7 +43,7 @@ const SearchTicketsPage = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className="search-tickets-page center">
       <h1>Search Tickets</h1>
       <div className="search-bar">
         <input
@@ -39,23 +54,37 @@ const SearchTicketsPage = () => {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
-      <br/>
       {error && <p className="error-text">{error}</p>}
       {loading ? (
         <p className="loading-text">Searching for tickets...</p>
       ) : (
-        
-        <div className="tickets-container">
-          {results.length > 0 ? (
-            results.map((ticket) => (
-              <div key={ticket._id} className={`ticket-card ${ticket.status}`}>
-                <h2>{ticket.title}</h2>
-                <p>Status: <strong>{ticket.status.toUpperCase()}</strong></p>
-                <p>
-                  Purchaser: {ticket.purchaser ? ticket.purchaser : 'Not Purchased'}
-                </p>
-              </div>
-            ))
+        <div className="user-cards-container center">
+          {Object.keys(results).length > 0 ? (
+            Object.keys(results).map((user) => {
+              // Calculate total price and ticket count for each user
+              const userTickets = results[user];
+              const ticketCount = userTickets.length;
+              const totalPrice = userTickets.reduce((sum, ticket) => sum + ticket.price, 0);
+              
+              return (
+                <div key={user} className="center">
+                  <h2>{user}'s Tickets</h2>
+                  <div className="tickets-container">
+                    {userTickets.map((ticket) => (
+                      <div key={ticket._id} className={`ticket-card ${ticket.availableCount > 0 ? 'available' : 'sold'}`}>
+                        <h3>{ticket.title}</h3>
+                        <p>Status: <strong>{ticket.availableCount > 0 ? 'Available' : 'Sold'}</strong></p>
+                        <p>Price: ${ticket.price}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="user-summary">
+                    <p><strong>Total Tickets Purchased:</strong> {ticketCount}</p>
+                    <p><strong>Total Price:</strong> ${totalPrice}</p>
+                  </div>
+                </div>
+              );
+            })
           ) : (
             <p className="no-tickets-text">No tickets found for the provided name.</p>
           )}
