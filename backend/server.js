@@ -2,24 +2,28 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-
-// Routes
 const ticketRoutes = require('./routes/ticketRoutes');
-const userRoutes = require('./routes/userRoutes');
-const logRoutes = require('./routes/logRoutes');
 
 const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
 connectDB();
 
-// API Routes
+// Routes
 app.use('/api/tickets', ticketRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/logs', logRoutes);
 
-// Start the server
+// Default error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
