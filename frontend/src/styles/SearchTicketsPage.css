@@ -1,0 +1,95 @@
+/* General Page Styling */
+.search-tickets-page {
+    max-width: 1200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* Search Bar Styling */
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input {
+    width: 60%;
+    padding: 12px;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+  }
+  
+  .search-bar button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .search-bar button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  /* Tickets Container */
+  .tickets-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Individual Ticket Card */
+  .ticket-card {
+    width: 280px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .ticket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Status Colors */
+  .ticket-card.available {
+    border-left: 6px solid #28a745; /* Green for available tickets */
+  }
+  
+  .ticket-card.sold {
+    border-left: 6px solid #dc3545; /* Red for sold tickets */
+  }
+  
+  /* Loading and Error Text */
+  .loading-text,
+  .no-tickets-text,
+  .error-text {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  .error-text {
+    color: #dc3545; /* Red for error messages */
+  }
+  
